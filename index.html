@@ -1,0 +1,1106 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BASKETBALL STRATEGY</title>
+<style>
+:root {
+  --navy:#17365d;
+  --blue:#3979b9;
+  --light:#edf3f9;
+  --bg:#f4f6f9;
+  --text:#263445;
+  --muted:#718096;
+  --border:#dce3eb;
+  --white:#fff;
+  --green:#258568;
+  --red:#c44e4e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Yu Gothic","Meiryo",sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  background:var(--navy);
+  color:white;
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 8px #0002;
+}
+.logo{font-size:19px;font-weight:800;letter-spacing:1.5px}
+.logo small{display:block;font-size:10px;letter-spacing:2px;font-weight:400;opacity:.75}
+.header-right{display:flex;align-items:center;gap:12px}
+.header-right select{
+  background:#ffffff18;color:white;border:1px solid #ffffff55;
+  border-radius:6px;padding:7px;
+}
+.header-right option{color:#222}
+.layout{display:flex;min-height:calc(100vh - 65px)}
+.sidebar{
+  width:220px;background:white;border-right:1px solid var(--border);
+  padding:18px 12px;flex-shrink:0;
+}
+.nav-label{font-size:11px;color:#9aa5b3;padding:12px 10px 7px;font-weight:bold}
+.nav-btn{
+  width:100%;border:0;background:transparent;text-align:left;
+  padding:13px 12px;border-radius:7px;color:#536174;
+  font-size:14px;margin-bottom:3px;
+}
+.nav-btn:hover,.nav-btn.active{background:var(--light);color:var(--navy);font-weight:bold}
+.nav-btn.active{border-left:3px solid var(--blue)}
+main{flex:1;min-width:0;padding:26px;max-width:1600px;margin:auto;width:100%}
+.page{display:none}
+.page.active{display:block}
+h1{font-size:25px;color:var(--navy);margin:0 0 8px}
+h2{font-size:18px;color:var(--navy);margin:0 0 15px}
+h3{font-size:15px;margin:0 0 12px;color:var(--navy)}
+.subtitle{color:var(--muted);font-size:13px;margin-bottom:25px}
+.card{
+  background:white;border:1px solid var(--border);border-radius:10px;
+  padding:20px;margin-bottom:18px;
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.stat{
+  background:white;padding:19px;border:1px solid var(--border);
+  border-radius:10px;
+}
+.stat strong{display:block;font-size:28px;color:var(--navy);margin-top:8px}
+.stat span{font-size:12px;color:var(--muted)}
+.btn{
+  border:0;border-radius:6px;padding:10px 15px;
+  background:var(--navy);color:white;font-size:13px;
+}
+.btn:hover{opacity:.87}
+.btn.blue{background:var(--blue)}
+.btn.gray{background:#e9edf2;color:#435166}
+.btn.red{background:var(--red)}
+.btn.green{background:var(--green)}
+.btn.small{padding:7px 10px;font-size:12px}
+.btn.outline{background:white;color:var(--navy);border:1px solid var(--border)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;color:#64748b;margin-bottom:6px;font-weight:bold}
+input,select,textarea{
+  width:100%;border:1px solid var(--border);border-radius:6px;
+  padding:10px;background:white;color:var(--text);outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:vertical;min-height:85px;line-height:1.7}
+.row{display:flex;gap:12px;align-items:center}
+.row>*{flex:1;min-width:0}
+.badge{
+  display:inline-block;background:#e9f1fa;color:var(--navy);
+  padding:4px 9px;border-radius:20px;font-size:11px;
+}
+.member-list{display:flex;flex-direction:column;gap:8px}
+.member{
+  border:1px solid var(--border);border-radius:7px;padding:11px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:white;gap:10px;
+}
+.member-info{display:flex;align-items:center;gap:10px;min-width:0}
+.member-number{
+  background:var(--navy);color:white;width:32px;height:32px;
+  border-radius:50%;display:grid;place-items:center;font-size:12px;
+}
+.member-name{font-size:14px;font-weight:bold}
+.member-role{font-size:11px;color:var(--muted);margin-top:3px}
+.empty{padding:35px;text-align:center;color:var(--muted);font-size:13px}
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:6px;padding:12px;
+  background:white;border:1px solid var(--border);border-radius:8px 8px 0 0;
+}
+.tool{
+  border:1px solid var(--border);background:white;color:#435166;
+  border-radius:5px;padding:8px 11px;font-size:12px;
+}
+.tool.active{background:var(--navy);color:white;border-color:var(--navy)}
+.court-area{
+  background:#e5ebef;border:1px solid var(--border);
+  padding:12px;border-radius:0 0 8px 8px;
+}
+#courtCanvas{
+  display:block;width:100%;max-height:720px;touch-action:none;
+  background:#e8f0e8;border-radius:4px;
+}
+.board-info{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;gap:10px;flex-wrap:wrap;
+}
+.board-bottom{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.saved-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.saved-item{
+  background:white;border:1px solid var(--border);border-radius:8px;
+  padding:15px;
+}
+.saved-item h3{margin-bottom:6px}
+.saved-item p{font-size:12px;color:var(--muted);margin:5px 0 12px}
+.history-item{
+  border-left:3px solid var(--blue);padding:12px 15px;
+  background:white;margin-bottom:10px;border-radius:0 7px 7px 0;
+}
+.history-item strong{color:var(--navy)}
+.history-item p{font-size:13px;line-height:1.7;white-space:pre-wrap}
+hr{border:0;border-top:1px solid var(--border);margin:18px 0}
+.modal{
+  display:none;position:fixed;inset:0;background:#0008;
+  z-index:100;align-items:center;justify-content:center;padding:15px;
+}
+.modal.show{display:flex}
+.modal-content{
+  background:white;border-radius:12px;padding:23px;width:100%;
+  max-width:450px;max-height:85vh;overflow:auto;
+}
+.modal-content h2{margin-bottom:20px}
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  background:#17365d;color:white;padding:12px 20px;border-radius:8px;
+  z-index:200;font-size:13px;opacity:0;pointer-events:none;
+  transition:.2s;
+}
+.toast.show{opacity:1}
+footer{text-align:center;color:#9aa5b3;font-size:11px;padding:25px}
+@media(max-width:800px){
+  .sidebar{width:65px;padding:10px 5px}
+  .nav-label{display:none}
+  .nav-btn{font-size:0;text-align:center;padding:15px 2px}
+  .nav-btn::first-letter{font-size:17px}
+  main{padding:15px}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  header{padding:0 12px}
+  .logo{font-size:15px}
+  .header-right select{max-width:115px;font-size:11px}
+  main{padding:12px}
+  .grid,.saved-list{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .card{padding:14px}
+  h1{font-size:21px}
+  .tool{padding:8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    BASKETBALL STRATEGY
+    <small>THINK TOGETHER. PLAY TOGETHER.</small>
+  </div>
+  <div class="header-right">
+    <select id="headerTeam" onchange="changeTeam(this.value)"></select>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="nav-label">LEARNING</div>
+  <button class="nav-btn active" onclick="showPage('home',this)">ホーム</button>
+  <button class="nav-btn" onclick="showPage('board',this)">チーム作戦</button>
+  <button class="nav-btn" onclick="showPage('individual',this)">個人の役割</button>
+  <button class="nav-btn" onclick="showPage('reflection',this)">授業の振り返り</button>
+  <div class="nav-label">RECORD</div>
+  <button class="nav-btn" onclick="showPage('history',this)">学習履歴</button>
+  <button class="nav-btn" onclick="showPage('members',this)">メンバー管理</button>
+  <div class="nav-label">DATA</div>
+  <button class="nav-btn" onclick="exportData()">データ保存</button>
+  <button class="nav-btn" onclick="document.getElementById('importFile').click()">データ復元</button>
+  <input type="file" id="importFile" accept=".json" hidden onchange="importData(event)">
+</aside>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <h1>学習ホーム</h1>
+  <p class="subtitle">仲間と考え、試し、振り返りながらチームの成長を目指そう。</p>
+  <div class="card">
+    <div class="row">
+      <div>
+        <span class="badge">CURRENT TEAM</span>
+        <h1 id="homeTeam" style="margin-top:12px">Aチーム</h1>
+        <p id="homeMembers" class="subtitle" style="margin:0">メンバー 0名</p>
+      </div>
+      <div style="text-align:right">
+        <span style="font-size:12px;color:var(--muted)">学習時間</span>
+        <div style="font-size:30px;font-weight:bold;color:var(--navy)" id="homeLesson">第1時</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="stat"><span>保存した作戦</span><strong id="statPlays">0</strong></div>
+    <div class="stat"><span>振り返り記録</span><strong id="statRecords">0</strong></div>
+    <div class="stat"><span>メンバー</span><strong id="statMembers">0</strong></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h2>前回の学習課題</h2>
+    <p id="lastChallenge" style="font-size:14px;line-height:1.8;color:#526174">まだ振り返りが記録されていません。</p>
+  </div>
+  <h2>学習メニュー</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>チーム作戦ボード</h3>
+      <p class="subtitle">コート上に選手を配置し、仲間と作戦を考えよう。</p>
+      <button class="btn" onclick="showPage('board')">作戦を考える</button>
+    </div>
+    <div class="card">
+      <h3>個人の役割</h3>
+      <p class="subtitle">チームの中で自分ができることを考えよう。</p>
+      <button class="btn" onclick="showPage('individual')">役割を確認する</button>
+    </div>
+    <div class="card">
+      <h3>授業の振り返り</h3>
+      <p class="subtitle">ゲームの成果と課題を記録しよう。</p>
+      <button class="btn" onclick="showPage('reflection')">振り返りを書く</button>
+    </div>
+    <div class="card">
+      <h3>学習履歴</h3>
+      <p class="subtitle">これまでの作戦や成長を振り返ろう。</p>
+      <button class="btn" onclick="showPage('history')">履歴を見る</button>
+    </div>
+  </div>
+</section>
+
+<!-- BOARD -->
+<section id="board" class="page">
+  <h1>チーム作戦ボード</h1>
+  <p class="subtitle">仲間の動きやパスのつながりを考え、チームの作戦をつくろう。</p>
+  <div class="card">
+    <div class="row">
+      <div class="field">
+        <label>作戦名</label>
+        <input id="playName" placeholder="例：スペースを使った攻撃">
+      </div>
+      <div class="field">
+        <label>授業回</label>
+        <input id="playLesson" type="number" min="1" value="1">
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>作戦の種類</label>
+        <select id="playPhase">
+          <option>攻撃</option><option>守備</option><option>攻守の切り替え</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>コート</label>
+        <select id="courtType" onchange="drawCourt()">
+          <option value="half">ハーフコート</option>
+          <option value="full">フルコート</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>作戦のねらい</label>
+      <input id="playGoal" placeholder="例：空いている場所を使ってシュートにつなげる">
+    </div>
+  </div>
+
+  <div class="board-info">
+    <h2 style="margin:0">コート操作</h2>
+    <span class="badge" id="boardMode">選択・移動モード</span>
+  </div>
+  <div class="toolbar">
+    <button class="tool active" data-tool="select" onclick="setTool('select',this)">選択・移動</button>
+    <button class="tool" data-tool="player" onclick="setTool('player',this)">選手追加</button>
+    <button class="tool" data-tool="ball" onclick="setTool('ball',this)">ボール追加</button>
+    <button class="tool" data-tool="move" onclick="setTool('move',this)">移動線</button>
+    <button class="tool" data-tool="pass" onclick="setTool('pass',this)">パス線</button>
+    <button class="tool" data-tool="dribble" onclick="setTool('dribble',this)">ドリブル線</button>
+    <button class="tool" data-tool="shot" onclick="setTool('shot',this)">シュート線</button>
+    <button class="tool" data-tool="erase" onclick="setTool('erase',this)">消しゴム</button>
+  </div>
+  <div class="court-area">
+    <canvas id="courtCanvas" width="700" height="500"></canvas>
+    <div class="board-bottom">
+      <button class="btn small gray" onclick="undoBoard()">元に戻す</button>
+      <button class="btn small gray" onclick="clearLines()">線を消す</button>
+      <button class="btn small gray" onclick="clearPlayers()">選手を消す</button>
+      <button class="btn small red" onclick="resetBoard()">全消去</button>
+      <button class="btn small blue" onclick="downloadBoard()">画像で保存</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>選手・ボールの一覧</h3>
+    <div id="boardObjects" class="member-list"></div>
+  </div>
+  <div class="actions">
+    <button class="btn" onclick="savePlay()">この作戦を保存</button>
+    <button class="btn outline" onclick="newBoard()">新しい作戦</button>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <h2>保存した作戦</h2>
+    <div id="savedPlays" class="saved-list"></div>
+  </div>
+</section>
+
+<!-- INDIVIDUAL -->
+<section id="individual" class="page">
+  <h1>個人の役割</h1>
+  <p class="subtitle">チームの中での自分の役割を考え、目標をもってゲームに参加しよう。</p>
+  <div class="card">
+    <div class="field">
+      <label>メンバーを選択</label>
+      <select id="individualSelect" onchange="loadIndividual()"></select>
+    </div>
+    <div class="field">
+      <label>チーム内での役割</label>
+      <textarea id="indRole" placeholder="例：味方がパスを出しやすい位置に移動する"></textarea>
+    </div>
+    <div class="field">
+      <label>攻撃時に意識すること</label>
+      <textarea id="indAttack" placeholder="例：ボールを持っていないときも空いている場所に動く"></textarea>
+    </div>
+    <div class="field">
+      <label>守備時に意識すること</label>
+      <textarea id="indDefense" placeholder="例：相手とゴールの間に位置取りする"></textarea>
+    </div>
+    <div class="field">
+      <label>自分の目標</label>
+      <textarea id="indGoal" placeholder="この授業で達成したいこと"></textarea>
+    </div>
+    <button class="btn" onclick="saveIndividual()">役割・目標を保存</button>
+  </div>
+  <div class="card">
+    <h2>授業ごとの個人記録</h2>
+    <div class="field">
+      <label>授業回</label>
+      <input id="indLesson" type="number" min="1" value="1">
+    </div>
+    <div class="field">
+      <label>今日できたこと</label>
+      <textarea id="indDone" placeholder="自分ができたことを具体的に書こう"></textarea>
+    </div>
+    <div class="field">
+      <label>次回に向けた課題</label>
+      <textarea id="indNext" placeholder="次の授業で意識したいことを書こう"></textarea>
+    </div>
+    <button class="btn blue" onclick="saveIndividualRecord()">個人記録を保存</button>
+  </div>
+  <div class="card">
+    <h2>メンバーの学習記録</h2>
+    <div id="individualHistory"></div>
+  </div>
+</section>
+
+<!-- REFLECTION -->
+<section id="reflection" class="page">
+  <h1>授業の振り返り</h1>
+  <p class="subtitle">チームでの成果と課題を振り返り、次の授業につなげよう。</p>
+  <div class="card">
+    <div class="row">
+      <div class="field">
+        <label>授業回</label>
+        <input type="number" id="refLesson" min="1" value="1">
+      </div>
+      <div class="field">
+        <label>チーム</label>
+        <input id="refTeam" disabled>
+      </div>
+    </div>
+    <div class="field">
+      <label>今日のチーム目標</label>
+      <textarea id="refGoal" placeholder="今日のゲームでチームとして何を意識したか"></textarea>
+    </div>
+    <div class="field">
+      <label>作戦の成果・うまくいったこと</label>
+      <textarea id="refSuccess" placeholder="どのような動きや作戦が成功したか"></textarea>
+    </div>
+    <div class="field">
+      <label>作戦の課題・うまくいかなかったこと</label>
+      <textarea id="refProblem" placeholder="どのような場面で課題があったか"></textarea>
+    </div>
+    <div class="field">
+      <label>個人としてできたこと</label>
+      <textarea id="refPersonal" placeholder="自分の役割を果たせたか"></textarea>
+    </div>
+    <div class="field">
+      <label>次時の改善・新しい作戦</label>
+      <textarea id="refNext" placeholder="次の授業で試したいこと"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="saveReflection()">振り返りを保存</button>
+      <button class="btn outline" onclick="clearReflectionForm()">入力をクリア</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>これまでの振り返り</h2>
+    <div id="reflectionHistory"></div>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<section id="history" class="page">
+  <h1>学習履歴</h1>
+  <p class="subtitle">これまでの作戦や振り返りを確認し、チームの成長を見つけよう。</p>
+  <div class="card">
+    <h2>授業の記録</h2>
+    <div id="historyRecords"></div>
+  </div>
+  <div class="card">
+    <h2>保存した作戦</h2>
+    <div id="historyPlays" class="saved-list"></div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section id="members" class="page">
+  <h1>チーム・メンバー管理</h1>
+  <p class="subtitle">チームとメンバーを登録し、学習記録を管理しよう。</p>
+  <div class="card">
+    <h2>チームの管理</h2>
+    <div class="row">
+      <div class="field">
+        <label>チーム名</label>
+        <input id="newTeamName" placeholder="例：Aチーム">
+      </div>
+      <div style="flex:0 0 auto;padding-top:17px">
+        <button class="btn" onclick="addTeam()">チームを追加</button>
+      </div>
+    </div>
+    <div id="teamList" class="member-list"></div>
+  </div>
+  <div class="card">
+    <h2>メンバーの管理</h2>
+    <div class="field">
+      <label>メンバー名</label>
+      <input id="newMemberName" placeholder="名前を入力">
+    </div>
+    <button class="btn" onclick="addMember()">メンバーを追加</button>
+    <hr>
+    <div id="memberList" class="member-list"></div>
+  </div>
+</section>
+
+<footer>BASKETBALL STRATEGY | LEARN TOGETHER</footer>
+</main>
+</div>
+
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <h2>メンバー名の変更</h2>
+    <div class="field">
+      <label>名前</label>
+      <input id="editMemberName">
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="confirmEditMember()">保存</button>
+      <button class="btn gray" onclick="closeModal()">キャンセル</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY="basketball_strategy_v1";
+
+function initialData(){
+  return {
+    currentTeam:"team1",
+    teams:[{
+      id:"team1",name:"Aチーム",
+      members:[],plays:[],reflections:[],individualRecords:[]
+    }],
+    lesson:1
+  };
+}
+let data;
+try{
+  const raw=localStorage.getItem(STORAGE_KEY);
+  data=raw?JSON.parse(raw):initialData();
+  if(!data.teams || !Array.isArray(data.teams) || !data.teams.length)
+    data=initialData();
+}catch(e){data=initialData()}
+
+function saveData(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  updateHeader();
+}
+function team(){
+  return data.teams.find(t=>t.id===data.currentTeam)||data.teams[0];
+}
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+}
+function escapeHTML(s){
+  return String(s??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),2200);
+}
+function showPage(id,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  else{
+    const found=[...document.querySelectorAll(".nav-btn")]
+      .find(b=>b.getAttribute("onclick")?.includes("'"+id+"'"));
+    if(found)found.classList.add("active");
+  }
+  refreshPage(id);
+  if(id==="board")setTimeout(drawCourt,30);
+}
+function refreshPage(id){
+  if(id==="home")renderHome();
+  if(id==="board")renderBoard();
+  if(id==="individual")renderIndividual();
+  if(id==="reflection")renderReflection();
+  if(id==="history")renderHistory();
+  if(id==="members")renderMembers();
+}
+function updateHeader(){
+  const sel=document.getElementById("headerTeam");
+  sel.innerHTML=data.teams.map(t=>
+    `<option value="${t.id}" ${t.id===data.currentTeam?"selected":""}>${escapeHTML(t.name)}</option>`
+  ).join("");
+}
+function changeTeam(id){
+  if(data.teams.some(t=>t.id===id)){
+    data.currentTeam=id;
+    saveData();
+    document.querySelectorAll(".page.active").forEach(p=>refreshPage(p.id));
+  }
+}
+function renderHome(){
+  const t=team();
+  document.getElementById("homeTeam").textContent=t.name;
+  document.getElementById("homeMembers").textContent="メンバー "+t.members.length+"名";
+  document.getElementById("statPlays").textContent=t.plays.length;
+  document.getElementById("statRecords").textContent=t.reflections.length;
+  document.getElementById("statMembers").textContent=t.members.length;
+  const lessons=t.reflections.map(r=>Number(r.lesson)||0);
+  const max=Math.max(0,...lessons);
+  document.getElementById("homeLesson").textContent="第"+(max+1)+"時";
+  data.lesson=max+1;
+  const last=[...t.reflections].sort((a,b)=>b.lesson-a.lesson)[0];
+  document.getElementById("lastChallenge").textContent=
+    last?.next||"まだ振り返りが記録されていません。";
+  document.getElementById("refLesson").value=data.lesson;
+}
+function renderMembers(){
+  const t=team();
+  document.getElementById("teamList").innerHTML=data.teams.map(x=>
+    `<div class="member">
+      <span>${escapeHTML(x.name)} ${x.id===data.currentTeam?'<span class="badge">選択中</span>':""}</span>
+      <div class="actions">
+        <button class="btn small outline" onclick="changeTeam('${x.id}')">選択</button>
+        ${data.teams.length>1?`<button class="btn small red" onclick="deleteTeam('${x.id}')">削除</button>`:""}
+      </div>
+    </div>`
+  ).join("");
+  document.getElementById("memberList").innerHTML=t.members.length?
+    t.members.map((m,i)=>`
+    <div class="member">
+      <div class="member-info">
+        <div class="member-number">${i+1}</div>
+        <div class="member-name">${escapeHTML(m.name)}</div>
+      </div>
+      <div class="actions">
+        <button class="btn small outline" onclick="editMember('${m.id}')">編集</button>
+        <button class="btn small red" onclick="deleteMember('${m.id}')">削除</button>
+      </div>
+    </div>`).join(""):'<div class="empty">メンバーを登録してください。</div>';
+}
+function addTeam(){
+  const name=document.getElementById("newTeamName").value.trim();
+  if(!name)return toast("チーム名を入力してください");
+  const t={id:uid(),name,members:[],plays:[],reflections:[],individualRecords:[]};
+  data.teams.push(t);data.currentTeam=t.id;
+  document.getElementById("newTeamName").value="";
+  saveData();renderMembers();renderHome();toast("チームを追加しました");
+}
+function deleteTeam(id){
+  if(data.teams.length<=1)return;
+  if(!confirm("このチームと記録を削除しますか？"))return;
+  data.teams=data.teams.filter(t=>t.id!==id);
+  if(data.currentTeam===id)data.currentTeam=data.teams[0].id;
+  saveData();renderMembers();renderHome();
+}
+function addMember(){
+  const name=document.getElementById("newMemberName").value.trim();
+  if(!name)return toast("名前を入力してください");
+  team().members.push({id:uid(),name,role:"",attack:"",defense:"",goal:""});
+  document.getElementById("newMemberName").value="";
+  saveData();renderMembers();renderIndividual();toast("メンバーを追加しました");
+}
+let editingMember=null;
+function editMember(id){
+  editingMember=id;
+  document.getElementById("editMemberName").value=team().members.find(m=>m.id===id).name;
+  document.getElementById("editModal").classList.add("show");
+}
+function confirmEditMember(){
+  const m=team().members.find(x=>x.id===editingMember);
+  const name=document.getElementById("editMemberName").value.trim();
+  if(!name||!m)return;
+  m.name=name;saveData();closeModal();renderMembers();renderIndividual();
+}
+function closeModal(){document.getElementById("editModal").classList.remove("show")}
+function deleteMember(id){
+  if(!confirm("このメンバーを削除しますか？"))return;
+  team().members=team().members.filter(m=>m.id!==id);
+  saveData();renderMembers();renderIndividual();
+}
+function renderIndividual(){
+  const t=team(),sel=document.getElementById("individualSelect");
+  sel.innerHTML=t.members.map(m=>`<option value="${m.id}">${escapeHTML(m.name)}</option>`).join("");
+  if(!t.members.length){
+    ["indRole","indAttack","indDefense","indGoal"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("individualHistory").innerHTML='<div class="empty">メンバーを登録してください。</div>';
+    return;
+  }
+  loadIndividual();
+}
+function loadIndividual(){
+  const m=team().members.find(x=>x.id===document.getElementById("individualSelect").value);
+  if(!m)return;
+  document.getElementById("indRole").value=m.role||"";
+  document.getElementById("indAttack").value=m.attack||"";
+  document.getElementById("indDefense").value=m.defense||"";
+  document.getElementById("indGoal").value=m.goal||"";
+  renderIndividualHistory();
+}
+function saveIndividual(){
+  const m=team().members.find(x=>x.id===document.getElementById("individualSelect").value);
+  if(!m)return toast("メンバーを登録してください");
+  m.role=document.getElementById("indRole").value;
+  m.attack=document.getElementById("indAttack").value;
+  m.defense=document.getElementById("indDefense").value;
+  m.goal=document.getElementById("indGoal").value;
+  saveData();toast("個人の役割を保存しました");
+}
+function saveIndividualRecord(){
+  const t=team(),id=document.getElementById("individualSelect").value;
+  if(!id)return toast("メンバーを選択してください");
+  const lesson=Number(document.getElementById("indLesson").value)||1;
+  t.individualRecords.push({
+    id:uid(),memberId:id,lesson,
+    done:document.getElementById("indDone").value,
+    next:document.getElementById("indNext").value,
+    date:new Date().toISOString()
+  });
+  saveData();renderIndividualHistory();toast("個人記録を保存しました");
+  document.getElementById("indDone").value="";
+  document.getElementById("indNext").value="";
+}
+function renderIndividualHistory(){
+  const id=document.getElementById("individualSelect").value;
+  const records=team().individualRecords.filter(r=>r.memberId===id)
+    .sort((a,b)=>b.lesson-a.lesson);
+  document.getElementById("individualHistory").innerHTML=records.length?
+    records.map(r=>`
+    <div class="history-item">
+      <strong>第${r.lesson}時</strong>
+      <p><b>できたこと：</b>${escapeHTML(r.done||"未記入")}</p>
+      <p><b>次回の課題：</b>${escapeHTML(r.next||"未記入")}</p>
+      <button class="btn small red" onclick="deleteIndividualRecord('${r.id}')">削除</button>
+    </div>`).join(""):'<div class="empty">まだ記録がありません。</div>';
+}
+function deleteIndividualRecord(id){
+  if(!confirm("記録を削除しますか？"))return;
+  team().individualRecords=team().individualRecords.filter(r=>r.id!==id);
+  saveData();renderIndividualHistory();
+}
+function saveReflection(){
+  const t=team();
+  const lesson=Number(document.getElementById("refLesson").value)||1;
+  const r={
+    id:uid(),lesson,
+    goal:document.getElementById("refGoal").value,
+    success:document.getElementById("refSuccess").value,
+    problem:document.getElementById("refProblem").value,
+    personal:document.getElementById("refPersonal").value,
+    next:document.getElementById("refNext").value,
+    date:new Date().toISOString()
+  };
+  if(!r.goal&&!r.success&&!r.problem&&!r.personal&&!r.next)
+    return toast("振り返りを入力してください");
+  t.reflections.push(r);
+  saveData();clearReflectionForm();renderReflection();renderHome();
+  toast("振り返りを保存しました");
+}
+function clearReflectionForm(){
+  ["refGoal","refSuccess","refProblem","refPersonal","refNext"].forEach(id=>document.getElementById(id).value="");
+}
+function renderReflection(){
+  document.getElementById("refTeam").value=team().name;
+  document.getElementById("refLesson").value=data.lesson||1;
+  const records=[...team().reflections].sort((a,b)=>b.lesson-a.lesson);
+  document.getElementById("reflectionHistory").innerHTML=records.length?
+    records.map(r=>`
+    <div class="history-item">
+      <strong>第${r.lesson}時</strong>
+      <p><b>目標：</b>${escapeHTML(r.goal)}</p>
+      <p><b>成果：</b>${escapeHTML(r.success)}</p>
+      <p><b>課題：</b>${escapeHTML(r.problem)}</p>
+      <p><b>個人：</b>${escapeHTML(r.personal)}</p>
+      <p><b>次時：</b>${escapeHTML(r.next)}</p>
+      <button class="btn small red" onclick="deleteReflection('${r.id}')">削除</button>
+    </div>`).join(""):'<div class="empty">記録はまだありません。</div>';
+}
+function deleteReflection(id){
+  if(!confirm("この記録を削除しますか？"))return;
+  team().reflections=team().reflections.filter(r=>r.id!==id);
+  saveData();renderReflection();renderHome();
+}
+function renderHistory(){
+  const t=team();
+  const records=[...t.reflections].sort((a,b)=>a.lesson-b.lesson);
+  document.getElementById("historyRecords").innerHTML=records.length?
+    records.map(r=>`
+    <div class="history-item">
+      <strong>第${r.lesson}時</strong>
+      <p><b>目標：</b>${escapeHTML(r.goal)}</p>
+      <p><b>成果：</b>${escapeHTML(r.success)}</p>
+      <p><b>課題：</b>${escapeHTML(r.problem)}</p>
+      <p><b>次時の改善：</b>${escapeHTML(r.next)}</p>
+    </div>`).join(""):'<div class="empty">まだ学習記録がありません。</div>';
+  document.getElementById("historyPlays").innerHTML=renderPlayCards(t.plays);
+}
+
+// BOARD SYSTEM
+const canvas=document.getElementById("courtCanvas");
+const ctx=canvas.getContext("2d");
+let board={objects:[],lines:[]};
+let tool="select",selected=null,dragging=false,startPoint=null;
+let boardUndo=[];
+let currentPlayId=null;
+const toolNames={
+ select:"選択・移動モード",player:"選手追加モード",
+ ball:"ボール追加モード",move:"選手の移動線",
+ pass:"パスの線",dribble:"ドリブルの線",
+ shot:"シュートの線",erase:"消しゴムモード"
+};
+function setTool(name,btn){
+  tool=name;selected=null;
+  document.querySelectorAll(".tool").forEach(b=>b.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  else document.querySelector(`[data-tool="${name}"]`)?.classList.add("active");
+  document.getElementById("boardMode").textContent=toolNames[name];
+  drawCourt();
+}
+function snapshot(){
+  boardUndo.push(JSON.stringify(board));
+  if(boardUndo.length>20)boardUndo.shift();
+}
+function undoBoard(){
+  if(!boardUndo.length)return toast("戻せる操作がありません");
+  board=JSON.parse(boardUndo.pop());selected=null;drawCourt();renderBoardObjects();
+}
+function getPos(e){
+  const r=canvas.getBoundingClientRect();
+  return {
+    x:(e.clientX-r.left)/r.width*canvas.width,
+    y:(e.clientY-r.top)/r.height*canvas.height
+  };
+}
+function hitObject(p){
+  for(let i=board.objects.length-1;i>=0;i--){
+    const o=board.objects[i];
+    if(Math.hypot(o.x-p.x,o.y-p.y)<24)return o;
+  }
+  return null;
+}
+canvas.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  const p=getPos(e);
+  if(tool==="player"){
+    snapshot();
+    const members=team().members;
+    const number=board.objects.filter(o=>o.type==="player").length+1;
+    const m=members[number-1];
+    board.objects.push({
+      id:uid(),type:"player",x:p.x,y:p.y,
+      name:m?.name||"選手"+number,
+      number, color:"#234f83"
+    });
+    drawCourt();renderBoardObjects();return;
+  }
+  if(tool==="ball"){
+    snapshot();
+    board.objects.push({id:uid(),type:"ball",x:p.x,y:p.y});
+    drawCourt();renderBoardObjects();return;
+  }
+  if(tool==="erase"){
+    const obj=hitObject(p);
+    if(obj){
+      snapshot();board.objects=board.objects.filter(o=>o.id!==obj.id);
+    }else if(board.lines.length){
+      snapshot();board.lines.pop();
+    }
+    drawCourt();renderBoardObjects();return;
+  }
+  if(["move","pass","dribble","shot"].includes(tool)){
+    startPoint=p;dragging=true;canvas.setPointerCapture(e.pointerId);drawCourt();return;
+  }
+  const obj=hitObject(p);
+  if(obj){selected=obj.id;dragging=true;canvas.setPointerCapture(e.pointerId)}
+  else selected=null;
+  drawCourt();
+});
+canvas.addEventListener("pointermove",e=>{
+  if(!dragging)return;
+  const p=getPos(e);
+  if(startPoint){
+    drawCourt();
+    drawArrow(startPoint,p,tool,false);
+  }else if(tool==="select"&&selected){
+    const o=board.objects.find(x=>x.id===selected);
+    if(o){o.x=p.x;o.y=p.y;drawCourt()}
+  }
+});
+canvas.addEventListener("pointerup",e=>{
+  if(!dragging)return;
+  const p=getPos(e);
+  if(startPoint){
+    snapshot();
+    if(Math.hypot(p.x-startPoint.x,p.y-startPoint.y)>8){
+      board.lines.push({
+        id:uid(),type:tool,
+        x1:startPoint.x,y1:startPoint.y,x2:p.x,y2:p.y
+      });
+    }
+    startPoint=null;
+  }else if(tool==="select"&&selected){
+    snapshot();
+  }
+  dragging=false;drawCourt();renderBoardObjects();
+});
+canvas.addEventListener("pointercancel",()=>{
+  dragging=false;startPoint=null;drawCourt();
+});
+function drawArrow(a,b,type,preview){
+  ctx.save();
+  const colors={move:"#234f83",pass:"#d28a26",dribble:"#258568",shot:"#c44e4e"};
+  ctx.strokeStyle=colors[type]||"#234f83";
+  ctx.fillStyle=ctx.strokeStyle;
+  ctx.lineWidth=3;
+  if(type==="pass")ctx.setLineDash([8,6]);
+  if(type==="dribble")ctx.setLineDash([3,5]);
+  if(type==="shot")ctx.setLineDash([2,3]);
+  ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  const angle=Math.atan2(b.y-a.y,b.x-a.x);
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(b.x,b.y);
+  ctx.lineTo(b.x-13*Math.cos(angle-.45),b.y-13*Math.sin(angle-.45));
+  ctx.lineTo(b.x-13*Math.cos(angle+.45),b.y-13*Math.sin(angle+.45));
+  ctx.closePath();ctx.fill();
+  if(preview)ctx.globalAlpha=.5;
+  ctx.restore();
+}
+function drawCourt(){
+  const w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#e8f0e8";ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle="#718a78";ctx.lineWidth=2;
+  ctx.strokeRect(2,2,w-4,h-4);
+  if(document.getElementById("courtType").value==="half"){
+    ctx.beginPath();ctx.moveTo(0,h*.5);ctx.lineTo(w,h*.5);ctx.stroke();
+    ctx.beginPath();ctx.arc(w/2,h*.5,65,0,Math.PI*2);ctx.stroke();
+    ctx.strokeRect(w*.35,2,w*.3,h*.17);
+    ctx.beginPath();ctx.arc(w/2,h*.19,65,0,Math.PI);ctx.stroke();
+    ctx.beginPath();ctx.arc(w/2,h*.14,9,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.arc(w/2,2,120,0,Math.PI);ctx.stroke();
+  }else{
+    ctx.beginPath();ctx.moveTo(w/2,0);ctx.lineTo(w/2,h);ctx.stroke();
+    ctx.beginPath();ctx.arc(w/2,h/2,65,0,Math.PI*2);ctx.stroke();
+    [0,w].forEach(x=>{
+      const left=x===0;
+      ctx.strokeRect(left?2:w*.85, h*.32,w*.15-2,h*.36);
+      ctx.beginPath();
+      ctx.arc(left?2:w-2,h/2,65,left?-Math.PI/2:Math.PI/2,left?Math.PI/2:Math.PI*1.5);
+      ctx.stroke();
+      ctx.beginPath();ctx.arc(left?45:w-45,h/2,9,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(left?45:w-45,h/2,120,left?-Math.PI/2:Math.PI/2,left?Math.PI/2:Math.PI*1.5);
+      ctx.stroke();
+    });
+  }
+  board.lines.forEach(l=>drawArrow({x:l.x1,y:l.y1},{x:l.x2,y:l.y2},l.type,false));
+  board.objects.forEach(o=>{
+    ctx.save();
+    if(o.type==="player"){
+      ctx.fillStyle=o.color||"#234f83";
+      ctx.beginPath();ctx.arc(o.x,o.y,16,0,Math.PI*2);ctx.fill();
+      if(selected===o.id){ctx.strokeStyle="#e5a12b";ctx.lineWidth=4;ctx.stroke()}
+      ctx.fillStyle="white";ctx.font="bold 12px Arial";ctx.textAlign="center";
+      ctx.textBaseline="middle";ctx.fillText(o.number||"",o.x,o.y);
+      ctx.fillStyle="#263445";ctx.font="11px sans-serif";
+      ctx.fillText(o.name||"",o.x,o.y+27);
+    }else{
+      ctx.fillStyle="#e39a24";ctx.strokeStyle="#9d6817";ctx.lineWidth=2;
+      ctx.beginPath();ctx.arc(o.x,o.y,10,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(o.x-8,o.y);ctx.lineTo(o.x+8,o.y);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(o.x,o.y-8);ctx.lineTo(o.x,o.y+8);ctx.stroke();
+    }
+    ctx.restore();
+  });
+}
+function renderBoardObjects(){
+  const el=document.getElementById("boardObjects");
+  el.innerHTML=board.objects.length?board.objects.map(o=>`
+    <div class="member">
+      <span>${o.type==="player"?"選手 "+o.number+": "+escapeHTML(o.name):"ボール"}</span>
+      <button class="btn small red" onclick="removeObject('${o.id}')">削除</button>
+    </div>`).join(""):'<div class="empty">選手やボールを配置してください。</div>';
+}
+function removeObject(id){
+  snapshot();board.objects=board.objects.filter(o=>o.id!==id);
+  drawCourt();renderBoardObjects();
+}
+function clearLines(){
+  snapshot();board.lines=[];drawCourt();
+}
+function clearPlayers(){
+  snapshot();board.objects=board.objects.filter(o=>o.type==="ball");
+  drawCourt();renderBoardObjects();
+}
+function resetBoard(){
+  if(!confirm("コート上のすべての配置と線を消去しますか？"))return;
+  snapshot();board={objects:[],lines:[]};drawCourt();renderBoardObjects();
+}
+function newBoard(){
+  if(!confirm("現在の作戦を保存せず、新しく作成しますか？"))return;
+  board={objects:[],lines:[]};currentPlayId=null;
+  ["playName","playGoal"].forEach(id=>document.getElementById(id).value="");
+  drawCourt();renderBoardObjects();
+}
+function savePlay(){
+  const t=team();
+  const name=document.getElementById("playName").value.trim();
+  if(!name)return toast("作戦名を入力してください");
+  const play={
+    id:currentPlayId||uid(),
+    name,
+    lesson:Number(document.getElementById("playLesson").value)||1,
+    phase:document.getElementById("playPhase").value,
+    goal:document.getElementById("playGoal").value,
+    court:document.getElementById("courtType").value,
+    board:JSON.parse(JSON.stringify(board)),
+    date:new Date().toISOString()
+  };
+  const index=t.plays.findIndex(p=>p.id===play.id);
+  if(index>=0)t.plays[index]=play;
+  else t.plays.push(play);
+  currentPlayId=play.id;
+  saveData();renderBoard();toast("作戦を保存しました");
+}
+function loadPlay(id){
+  const p=team().plays.find(x=>x.id===id);
+  if(!p)return;
+  currentPlayId=p.id;
+  board=JSON.parse(JSON.stringify(p.board));
+  document.getElementById("playName").value=p.name;
+  document.getElementById("playLesson").value=p.lesson;
+  document.getElementById("playPhase").value=p.phase;
+  document.getElementById("playGoal").value=p.goal||"";
+  document.getElementById("courtType").value=p.court||"half";
+  boardUndo=[];drawCourt();renderBoardObjects();
+  window.scrollTo({top:0,behavior:"smooth"});
+  toast("作戦を読み込みました");
+}
+function duplicatePlay(id){
+  const p=team().plays.find(x=>x.id===id);
+  if(!p)return;
+  const copy=JSON.parse(JSON.stringify(p));
+  copy.id=uid();copy.name=p.name+"（改善案）";
+  copy.lesson=data.lesson||1;copy.date=new Date().toISOString();
+  team().plays.push(copy);saveData();renderBoard();
+  toast("作戦を複製しました");
+}
+function deletePlay(id){
+  if(!confirm("この作戦を削除しますか？"))return;
+  team().plays=team().plays.filter(p=>p.id!==id);
+  if(currentPlayId===id)currentPlayId=null;
+  saveData();renderBoard();
+}
+function renderPlayCards(plays){
+  return plays.length?plays.map(p=>`
+    <div class="saved-item">
+      <h3>${escapeHTML(p.name)}</h3>
+      <span class="badge">${escapeHTML(p.phase)}・第${p.lesson}時</span>
+      <p>${escapeHTML(p.goal||"ねらい未設定")}</p>
+      <div class="actions">
+        <button class="btn small" onclick="loadPlay('${p.id}');showPage('board')">開く</button>
+        <button class="btn small outline" onclick="duplicatePlay('${p.id}')">複製</button>
+        <button class="btn small red" onclick="deletePlay('${p.id}')">削除</button>
+      </div>
+    </div>`).join(""):'<div class="empty">保存された作戦はありません。</div>';
+}
+function renderBoard(){
+  document.getElementById("savedPlays").innerHTML=renderPlayCards(team().plays);
+  document.getElementById("playLesson").value=data.lesson||1;
+  drawCourt();renderBoardObjects();
+}
+function downloadBoard(){
+  drawCourt();
+  const a=document.createElement("a");
+  a.download="basketball-strategy.png";
+  a.href=canvas.toDataURL("image/png");
+  a.click();toast("画像を保存しました");
+}
+
+// DATA EXPORT / IMPORT
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="basketball-strategy-backup.json";a.click();
+  URL.revokeObjectURL(url);toast("バックアップを保存しました");
+}
+function importData(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const d=JSON.parse(reader.result);
+      if(!Array.isArray(d.teams)||!d.teams.length)throw new Error();
+      if(!confirm("現在のデータを読み込んだデータに置き換えますか？"))return;
+      data=d;
+      if(!data.teams.some(t=>t.id===data.currentTeam))
+        data.currentTeam=data.teams[0].id;
+      saveData();refreshPage("home");renderHome();toast("データを復元しました");
+    }catch(err){alert("正しいバックアップファイルではありません。")}
+    e.target.value="";
+  };
+  reader.readAsText(file);
+}
+
+// INITIALIZE
+function init(){
+  updateHeader();
+  renderHome();
+  renderMembers();
+  renderBoard();
+  renderIndividual();
+  renderReflection();
+  drawCourt();
+}
+init();
+</script>
+</body>
+</html>
